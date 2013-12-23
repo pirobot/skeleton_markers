@@ -51,12 +51,6 @@ class SkeletonMarkers():
         
         # Make sure we see the openni_depth_frame
         tf_listener.waitForTransform(self.fixed_frame, self.fixed_frame, rospy.Time(), rospy.Duration(60.0))
-
-        # The OpenNI tracker numbers each detected skeleton incrementally starting at 1
-        user_index = 1
-        
-        # Unfortunately, the index increments even if the same user is lost and then found again
-        max_user_index = 5
         
         # A flag to track when we have detected a skeleton
         skeleton_detected = False
@@ -69,29 +63,41 @@ class SkeletonMarkers():
             # Clear the markers point list
             self.markers.points = list()
             
-            while not skeleton_detected:
-                test_frame = "head_" + str(user_index)
+            # Check to see if a skeleton is detected
+            while not skeleton_detected: 
+                # Assume we can at least see the head frame               
+                frames = [f for f in tf_listener.getFrameStrings() if f.startswith('head_')]
                 
                 try:
-                    (trans, rot)  = tf_listener.lookupTransform(self.fixed_frame, test_frame, rospy.Time(0))
-                    skeleton_detected = True
+                    # If the head frame is visible, pluck off the
+                    # user index from the name
+                    head_frame = frames[0]
+                    user_index = head_frame.replace('head_', '')
+                    
+                    # Make sure we have a transform between the head
+                    # and the fixed frame
+                    try:
+                        (trans, rot)  = tf_listener.lookupTransform(self.fixed_frame, head_frame, rospy.Time(0))
+                        skeleton_detected = True
 
-                except (tf.Exception, tf.ConnectivityException, tf.LookupException):
-                    user_index += 1
-                    user_index %= max_user_index + 1
+                    except (tf.Exception, tf.ConnectivityException, tf.LookupException):
+                        skeleton_detected = False
+                        rospy.loginfo("User index: " + str(user_index))
+                        r.sleep()
+                except:
                     skeleton_detected = False
-                    rospy.loginfo("User index: " + str(user_index))
-                    r.sleep()
             
             # Loop through the skeleton frames
             for frame in self.skeleton_frames:
                 # Append the user_index to the frame name
                 skel_frame = frame + "_" + str(user_index)
 
-                # Find the position of the frame's origin relative to the fixed frame.
+                # We only need the origin of each skeleton frame
+                # relative to the fixed frame
                 position = Point()
                                         
-                # Get the transformation from the fixed frame to the skeleton frame
+                # Get the transformation from the fixed frame
+                # to the skeleton frame
                 try:
                     (trans, rot)  = tf_listener.lookupTransform(self.fixed_frame, skel_frame, rospy.Time(0))
                     position.x = trans[0]
