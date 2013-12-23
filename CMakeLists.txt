@@ -18,6 +18,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
 #uncomment if you have defined messages
 rosbuild_genmsg()
+
 #uncomment if you have defined services
 #rosbuild_gensrv()
 
@@ -30,4 +31,4 @@ rosbuild_genmsg()
 #target_link_libraries(example ${PROJECT_NAME})
 include_directories(/usr/include/openni /usr/include/nite /usr/include/ni)
 rosbuild_add_executable(skeleton_tracker src/skeleton_tracker.cpp src/KinectController.cpp src/KinectDisplay.cpp)
-target_link_libraries(skeleton_tracker glut OpenNI)
+target_link_libraries(skeleton_tracker glut OpenNI orocos-kdl tf)

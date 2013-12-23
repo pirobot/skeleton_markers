@@ -9,6 +9,7 @@
   <depend package="rospy"/>
   <depend package="roscpp"/>
   <depend package="visualization_msgs"/>
+  <depend package="std_msgs"/>
   <depend package="geometry_msgs"/>
   <depend package="openni_camera"/>
   <depend package="openni_tracker"/>

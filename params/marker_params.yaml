@@ -1,9 +1,6 @@
 # The fixed reference frame
 fixed_frame: 'openni_depth_frame'
 
-# tf_prefix for identifying skeleton frames when using openni_tracker
-tf_prefix: 'skeleton'
-
 # Update rate
 rate: 20
 
@@ -28,6 +25,7 @@ neck,
 torso,
 left_shoulder,
 left_elbow,
+left_hand,
 left_hip,
 left_knee,
 left_foot,
