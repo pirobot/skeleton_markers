@@ -49,9 +49,14 @@ generate_messages(
 )
 
 catkin_package(
-    DEPENDS rospy roscpp visualization_msgs std_msgs geometry_msgs
-    openni_camera openni_tracker tf
+    DEPENDS openni_camera openni_tracker
     CATKIN-DEPENDS message_runtime
+                   rospy
+		   roscpp
+		   tf
+		   visualization_msgs
+		   std_msgs
+		   geometry_msgs
     INCLUDE_DIRS # TODO
     LIBRARIES # TODO
 )
@@ -67,5 +72,7 @@ target_link_libraries(skeleton_tracker
   ${OpenNI_LIBRARIES}
   ${Nite_LIBRARY}
   ${orocos_kdl_LIBRARIES})
+
+add_dependencies(skeleton_tracker ${skeleton_markers_EXPORTED_TARGETS})
 
 install(TARGETS skeleton_tracker RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
