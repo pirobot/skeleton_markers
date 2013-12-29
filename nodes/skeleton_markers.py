@@ -19,7 +19,6 @@
     http://www.gnu.org/licenses/gpl.html
 """
 
-import roslib; roslib.load_manifest('skeleton_markers')
 import rospy
 from skeleton_markers.msg import Skeleton
 from visualization_msgs.msg import Marker
