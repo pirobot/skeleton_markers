@@ -158,6 +158,6 @@ int KinectController::init(const char* path, bool recording)
 
 int KinectController::shutdown()
 {
-	g_Context.Shutdown();
+	g_Context.Release();
   return 0;
 }

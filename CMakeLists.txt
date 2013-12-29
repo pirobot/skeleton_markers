@@ -1,34 +1,71 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+cmake_minimum_required(VERSION 2.8.3)
+project(skeleton_markers)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+find_package(orocos_kdl REQUIRED)
+find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
+  tf
+  geometry_msgs
+  message_generation)
 
-rosbuild_init()
+# Find OpenNI
+find_package(PkgConfig)
+pkg_check_modules(OpenNI REQUIRED libopenni)
 
-#set the default path for built executables to the "bin" directory
+# Find Nite
+find_path(Nite_INCLUDEDIR
+          NAMES XnVNite.h
+          HINTS /usr/include/nite /usr/local/include/nite)
+find_library(Nite_LIBRARY
+             NAMES XnVNite_1_3_1
+             HINTS /usr/lib /usr/local/lib
+             PATH_SUFFIXES lib) 
+
+link_directories(
+  ${catkin_LIBRARY_DIRS}
+  ${Boost_LIBRARY_DIRS}
+  ${orocos_kdl_LIBRARY_DIRS}
+  ${OpenNI_LIBRARIES}
+  ${Nite_LIBRARY}
+)
+
+include_directories(${catkin_INCLUDEDIR}
+                    ${OpenNI_INCLUDEDIR}
+                    ${Nite_INCLUDEDIR}
+                    ${orocos_kdl_INCLUDE_DIRS})
+
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
+
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-#uncomment if you have defined messages
-rosbuild_genmsg()
+add_message_files (
+  FILES
+  Skeleton.msg
+)
 
-#uncomment if you have defined services
-#rosbuild_gensrv()
+generate_messages(
+  DEPENDENCIES geometry_msgs std_msgs
+)
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
-include_directories(/usr/include/openni /usr/include/nite /usr/include/ni)
-rosbuild_add_executable(skeleton_tracker src/skeleton_tracker.cpp src/KinectController.cpp src/KinectDisplay.cpp)
-target_link_libraries(skeleton_tracker glut OpenNI orocos-kdl tf)
+catkin_package(
+    DEPENDS rospy roscpp visualization_msgs std_msgs geometry_msgs
+    openni_camera openni_tracker tf
+    CATKIN-DEPENDS message_runtime
+    INCLUDE_DIRS # TODO
+    LIBRARIES # TODO
+)
+
+add_executable(skeleton_tracker
+  src/skeleton_tracker.cpp
+  src/KinectController.cpp
+  src/KinectDisplay.cpp)
+
+target_link_libraries(skeleton_tracker
+  glut
+  ${catkin_LIBRARIES}
+  ${OpenNI_LIBRARIES}
+  ${Nite_LIBRARY}
+  ${orocos_kdl_LIBRARIES})
+
+install(TARGETS skeleton_tracker RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
