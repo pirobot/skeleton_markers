@@ -1,6 +1,6 @@
 <package>
   <name>skeleton_markers</name>
-  <version>0.4.0</version>
+  <version>0.4.1</version>
   <description>
    Skeleton Markers: Publish a list of joint markers 
    for viewing in RViz.
