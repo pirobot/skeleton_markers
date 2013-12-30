@@ -13,31 +13,19 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(PkgConfig)
 pkg_check_modules(OpenNI REQUIRED libopenni)
 
-# Find Nite
-find_path(Nite_INCLUDEDIR
-          NAMES XnVNite.h
-          HINTS /usr/include/nite /usr/local/include/nite)
-find_library(Nite_LIBRARY
-             NAMES XnVNite_1_3_1
-             HINTS /usr/lib /usr/local/lib
-             PATH_SUFFIXES lib) 
 
 link_directories(
   ${catkin_LIBRARY_DIRS}
   ${Boost_LIBRARY_DIRS}
   ${orocos_kdl_LIBRARY_DIRS}
   ${OpenNI_LIBRARIES}
-  ${Nite_LIBRARY}
 )
 
-include_directories(${catkin_INCLUDEDIR}
-                    ${OpenNI_INCLUDEDIR}
-                    ${Nite_INCLUDEDIR}
+include_directories(${catkin_INCLUDE_DIRS}
+                    ${OpenNI_INCLUDE_DIRS}
                     ${orocos_kdl_INCLUDE_DIRS})
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+catkin_python_setup()
 
 add_message_files (
   FILES
@@ -50,15 +38,13 @@ generate_messages(
 
 catkin_package(
     DEPENDS openni_camera openni_tracker
-    CATKIN-DEPENDS message_runtime
+    CATKIN DEPENDS message_runtime
                    rospy
 		   roscpp
 		   tf
 		   visualization_msgs
 		   std_msgs
 		   geometry_msgs
-    INCLUDE_DIRS # TODO
-    LIBRARIES # TODO
 )
 
 add_executable(skeleton_tracker
@@ -70,9 +56,13 @@ target_link_libraries(skeleton_tracker
   glut
   ${catkin_LIBRARIES}
   ${OpenNI_LIBRARIES}
-  ${Nite_LIBRARY}
   ${orocos_kdl_LIBRARIES})
 
 add_dependencies(skeleton_tracker ${skeleton_markers_EXPORTED_TARGETS})
 
 install(TARGETS skeleton_tracker RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+message("DEBUG variable catkin_INCLUDE_DIRS: ${catkin_INCLUDE_DIRS}")
+message("DEBUG variable OpenNI_INCLUDE_DIRS: ${OpenNI_INCLUDE_DIRS}")
+message("DEBUG variable orocos_kdl_INCLUDE_DIRS: ${orocos_kdl_INCLUDE_DIRS}")
+
