@@ -3,26 +3,35 @@ project(skeleton_markers)
 
 find_package(orocos_kdl REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  rospy
-  tf
-  geometry_msgs
-  message_generation)
+	roscpp
+	rospy
+	tf
+	geometry_msgs
+	message_generation)
 
 # Find OpenNI
 find_package(PkgConfig)
 pkg_check_modules(OpenNI REQUIRED libopenni)
 
+# Find Glut
+find_path(Glut_INCLUDE_DIRS
+          NAMES glut.h
+          HINTS /usr/include/GL /usr/local/include/GL)
+          
+find_library(Glut_LIBRARIES
+             NAMES glut)
 
 link_directories(
   ${catkin_LIBRARY_DIRS}
   ${Boost_LIBRARY_DIRS}
   ${orocos_kdl_LIBRARY_DIRS}
   ${OpenNI_LIBRARIES}
+  ${Glut_LIBRARIES}
 )
 
 include_directories(${catkin_INCLUDE_DIRS}
                     ${OpenNI_INCLUDE_DIRS}
+                    ${Glut_INCLUDE_DIRS}
                     ${orocos_kdl_INCLUDE_DIRS})
 
 catkin_python_setup()
@@ -33,18 +42,18 @@ add_message_files (
 )
 
 generate_messages(
-  DEPENDENCIES geometry_msgs std_msgs
+  	DEPENDENCIES geometry_msgs std_msgs
 )
 
 catkin_package(
     DEPENDS openni_camera openni_tracker
     CATKIN DEPENDS message_runtime
-                   rospy
-		   roscpp
-		   tf
-		   visualization_msgs
-		   std_msgs
-		   geometry_msgs
+	rospy
+	roscpp
+	tf
+	visualization_msgs
+	std_msgs
+	geometry_msgs
 )
 
 add_executable(skeleton_tracker
@@ -53,9 +62,9 @@ add_executable(skeleton_tracker
   src/KinectDisplay.cpp)
 
 target_link_libraries(skeleton_tracker
-  glut
   ${catkin_LIBRARIES}
   ${OpenNI_LIBRARIES}
+  ${Glut_LIBRARIES}
   ${orocos_kdl_LIBRARIES})
 
 add_dependencies(skeleton_tracker ${skeleton_markers_EXPORTED_TARGETS})
