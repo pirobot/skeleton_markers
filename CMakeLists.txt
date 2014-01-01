@@ -1,37 +1,34 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(skeleton_markers)
 
-find_package(orocos_kdl REQUIRED)
 find_package(catkin REQUIRED COMPONENTS
 	roscpp
 	rospy
 	tf
 	geometry_msgs
 	message_generation)
+	
+# Find Orocos KDL
+find_package(orocos_kdl REQUIRED)
 
 # Find OpenNI
 find_package(PkgConfig)
 pkg_check_modules(OpenNI REQUIRED libopenni)
 
 # Find Glut
-find_path(Glut_INCLUDE_DIRS
-          NAMES glut.h
-          HINTS /usr/include/GL /usr/local/include/GL)
-          
-find_library(Glut_LIBRARIES
-             NAMES glut)
+find_package(GLUT REQUIRED)
 
 link_directories(
   ${catkin_LIBRARY_DIRS}
   ${Boost_LIBRARY_DIRS}
   ${orocos_kdl_LIBRARY_DIRS}
   ${OpenNI_LIBRARIES}
-  ${Glut_LIBRARIES}
+  ${GLUT_LIBRARIES}
 )
 
 include_directories(${catkin_INCLUDE_DIRS}
                     ${OpenNI_INCLUDE_DIRS}
-                    ${Glut_INCLUDE_DIRS}
+                    ${GLUT_INCLUDE_DIRS}
                     ${orocos_kdl_INCLUDE_DIRS})
 
 catkin_python_setup()
@@ -64,14 +61,13 @@ add_executable(skeleton_tracker
 target_link_libraries(skeleton_tracker
   ${catkin_LIBRARIES}
   ${OpenNI_LIBRARIES}
-  ${Glut_LIBRARIES}
+  ${GLUT_LIBRARIES}
   ${orocos_kdl_LIBRARIES})
-
-add_dependencies(skeleton_tracker ${skeleton_markers_EXPORTED_TARGETS})
 
 install(TARGETS skeleton_tracker RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
 
 message("DEBUG variable catkin_INCLUDE_DIRS: ${catkin_INCLUDE_DIRS}")
 message("DEBUG variable OpenNI_INCLUDE_DIRS: ${OpenNI_INCLUDE_DIRS}")
+message("DEBUG variable GLUT_INCLUDE_DIRS: ${GLUT_INCLUDE_DIRS}")
 message("DEBUG variable orocos_kdl_INCLUDE_DIRS: ${orocos_kdl_INCLUDE_DIRS}")
 
