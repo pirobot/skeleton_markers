@@ -20,7 +20,6 @@ find_package(GLUT REQUIRED)
 
 link_directories(
   ${catkin_LIBRARY_DIRS}
-  ${Boost_LIBRARY_DIRS}
   ${orocos_kdl_LIBRARY_DIRS}
   ${OpenNI_LIBRARIES}
   ${GLUT_LIBRARIES}
