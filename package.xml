@@ -26,7 +26,7 @@
   <build_depend>geometry_msgs</build_depend>
   <build_depend>openni_camera</build_depend>
   <build_depend>openni_tracker</build_depend>
-  <build_depend>glut</build_depend>
+  <build_depend>freeglut3-dev</build_depend>
   <build_depend>rospy</build_depend>
   <build_depend>roscpp</build_depend>
 
@@ -42,6 +42,7 @@
   <run_depend>tf</run_depend>
   <run_depend>openni_camera</run_depend>
   <run_depend>openni_tracker</run_depend>
+  <run_depend>freeglut3-dev</run_depend>
   <run_depend>rospy</run_depend>
   <run_depend>roscpp</run_depend>
 
