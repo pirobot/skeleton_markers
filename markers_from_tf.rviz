@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
+        - /Grid1
         - /Marker1
       Splitter Ratio: 0.5
     Tree Height: 612
@@ -74,15 +75,18 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 0
-      Class: rviz/TopDownOrtho
+      Class: rviz/Orbit
+      Distance: 2.86067
+      Focal Point:
+        X: 1.21205
+        Y: 0.087698
+        Z: -0.26566
       Name: Current View
       Near Clip Distance: 0.01
-      Scale: 338.548
+      Pitch: 0.159796
       Target Frame: <Fixed Frame>
-      Value: TopDownOrtho (rviz)
-      X: 0.00920348
-      Y: -0.185012
+      Value: Orbit (rviz)
+      Yaw: 3.08
     Saved: ~
 Window Geometry:
   Displays:
