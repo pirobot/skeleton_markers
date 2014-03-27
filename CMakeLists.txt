@@ -6,6 +6,8 @@ find_package(catkin REQUIRED COMPONENTS
 	rospy
 	tf
 	geometry_msgs
+	std_msgs
+	visualization_msgs
 	message_generation)
 	
 # Find Orocos KDL
@@ -18,12 +20,12 @@ pkg_check_modules(OpenNI REQUIRED libopenni)
 # Find Glut
 find_package(GLUT REQUIRED)
 
-link_directories(
-  ${catkin_LIBRARY_DIRS}
-  ${orocos_kdl_LIBRARY_DIRS}
-  ${OpenNI_LIBRARIES}
-  ${GLUT_LIBRARIES}
-)
+#link_directories(
+#  ${catkin_LIBRARY_DIRS}
+#  ${orocos_kdl_LIBRARY_DIRS}
+#  ${OpenNI_LIBRARIES}
+#  ${GLUT_LIBRARIES}
+#)
 
 include_directories(${catkin_INCLUDE_DIRS}
                     ${OpenNI_INCLUDE_DIRS}
@@ -42,10 +44,13 @@ generate_messages(
 )
 
 catkin_package(
-    DEPENDS openni_camera openni_tracker
-    CATKIN DEPENDS message_runtime
+    DEPENDS 
+    CATKIN_DEPENDS 
 	rospy
 	roscpp
+	message_runtime
+	openni_camera
+	openni_tracker
 	tf
 	visualization_msgs
 	std_msgs

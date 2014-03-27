@@ -20,8 +20,6 @@
   <build_depend>visualization_msgs</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>geometry_msgs</build_depend>
-  <build_depend>openni_camera</build_depend>
-  <build_depend>openni_tracker</build_depend>
   <build_depend>glut</build_depend>
   <build_depend>libxmu-dev</build_depend>
   <build_depend>libxi-dev</build_depend>
