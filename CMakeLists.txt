@@ -20,17 +20,23 @@ pkg_check_modules(OpenNI REQUIRED libopenni)
 # Find Glut
 find_package(GLUT REQUIRED)
 
+# Find OpenGL
+find_package(OpenGL REQUIRED) 
+
 link_directories(
   ${catkin_LIBRARY_DIRS}
   ${orocos_kdl_LIBRARY_DIRS}
   ${OpenNI_LIBRARIES}
   ${GLUT_LIBRARIES}
+  ${OPENGL_INCLUDE_DIR}
 )
 
 include_directories(${catkin_INCLUDE_DIRS}
                     ${OpenNI_INCLUDE_DIRS}
                     ${GLUT_INCLUDE_DIRS}
-                    ${orocos_kdl_INCLUDE_DIRS})
+                    ${orocos_kdl_INCLUDE_DIRS}
+                    ${OPENGL_INCLUDE_DIR}
+)
 
 catkin_python_setup()
 
@@ -66,6 +72,7 @@ target_link_libraries(skeleton_tracker
   ${catkin_LIBRARIES}
   ${OpenNI_LIBRARIES}
   ${GLUT_LIBRARIES}
+  ${OPENGL_LIBRARIES}  
   ${orocos_kdl_LIBRARIES})
 
 #install(TARGETS skeleton_tracker RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
