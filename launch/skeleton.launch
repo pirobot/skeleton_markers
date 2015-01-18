@@ -1,8 +1,8 @@
 <launch>
   <arg name="fixed_frame" default="openni_depth_frame" />
 
-  <arg name="debug" value="False" />
-  <arg name="launch_prefix" value="xterm -e gdb --args" />
+  <arg name="debug" default="False" />
+  <arg name="launch_prefix" default="xterm -e gdb --args" />
     
   <group if="$(arg debug)">
     <node launch-prefix="$(arg launch_prefix)" pkg="skeleton_markers" name="skeleton_tracker" type="skeleton_tracker" output="screen"	>
