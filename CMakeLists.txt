@@ -38,8 +38,6 @@ include_directories(${catkin_INCLUDE_DIRS}
                     ${OPENGL_INCLUDE_DIR}
 )
 
-catkin_python_setup()
-
 add_message_files (
   FILES
   Skeleton.msg
