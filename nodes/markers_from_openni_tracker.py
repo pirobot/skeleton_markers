@@ -49,7 +49,7 @@ class SkeletonMarkers():
         tf_listener = tf.TransformListener()
         
         # Define a marker publisher
-        marker_pub = rospy.Publisher('skeleton_markers', Marker)
+        marker_pub = rospy.Publisher('skeleton_markers', Marker, queue_size=5)
         
         # Intialize the markers
         self.init_markers()

@@ -45,7 +45,7 @@ class SkeletonMarkers():
         rospy.Subscriber('skeleton', Skeleton, self.skeleton_handler)
         
         # Define a marker publisher.
-        self.marker_pub = rospy.Publisher('skeleton_markers', Marker)
+        self.marker_pub = rospy.Publisher('skeleton_markers', Marker, queue_size=5)
         
         # Initialize the marker points list.
         self.markers = Marker()
